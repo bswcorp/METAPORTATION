@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STG WEB 5 | THE KING SIZE QUANTUM-ERA</title>
+    <style>
+        :root { --neon: #00f2ff; --gold: #ffd700; --warn: #ff0000; --bg: #020617; }
+        body { background: var(--bg); color: white; font-family: 'Share Tech Mono', monospace; margin: 0; overflow: hidden; height: 100vh; }
+        
+        /* GALAXY CANVAS 180% VIEW */
+        .dashboard { display: grid; grid-template-columns: 20% 60% 20%; height: 100vh; border: 2px solid var(--neon); box-sizing: border-box; }
+        .side-panel { background: rgba(0, 242, 255, 0.05); border: 1px solid rgba(0, 242, 255, 0.2); padding: 15px; overflow-y: auto; }
+        .center-stage { border-left: 2px solid var(--neon); border-right: 2px solid var(--neon); position: relative; overflow: hidden; background: radial-gradient(circle, #0a192f 0%, #020617 100%); }
+
+        /* HUD ELEMENTS */
+        .hud-header { text-align: center; border-bottom: 2px solid var(--neon); padding: 10px; background: rgba(0,0,0,0.8); }
+        .glitch { font-size: 1.5rem; font-weight: bold; color: var(--neon); text-transform: uppercase; letter-spacing: 5px; animation: glitch 1s linear infinite; }
+        
+        /* WEB 5 MULTI-EXTENSIONS SUPPORT (180%) */
+        .window-box { border: 1px solid var(--gold); margin-bottom: 10px; padding: 10px; background: rgba(255, 215, 0, 0.1); font-size: 0.8rem; }
+        .radar- NASA { width: 150px; height: 150px; border: 2px solid var(--neon); border-radius: 50%; margin: 20px auto; position: relative; }
+        .radar- NASA::after { content: ""; position: absolute; width: 50%; height: 2px; background: var(--neon); top: 50%; left: 50%; transform-origin: left; animation: scan 3s linear infinite; }
+
+        /* BUTTONS */
+        .btn-quantum { background: transparent; border: 2px solid var(--gold); color: var(--gold); padding: 10px; width: 100%; cursor: pointer; text-transform: uppercase; font-weight: bold; margin-top: 10px; }
+        .btn-quantum:hover { background: var(--gold); color: black; box-shadow: 0 0 20px var(--gold); }
+
+        @keyframes scan { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes glitch { 2% { transform: translate(2px,0); } 4% { transform: translate(-2px,0); } 6% { transform: translate(0,2px); } }
+    </style>
+</head>
+<body>
+
+<div class="dashboard">
+    <!-- LEFT PANEL: TELEMETRY & PDF PREVIEW -->
+    <div class="side-panel">
+        <div class="window-box">
+            <h3>📑 DOC_VAULT</h3>
+            <p>PDF: NIB_STG_2026.pdf</p>
+            <p>STATUS: VERIFIED BY OSS</p>
+        </div>
+        <div class="window-box">
+            <h3>🎵 AUDIO_SYNC</h3>
+            <p>FILE: Glory_Beep.wav</p>
+            <p>LEVEL: INDUSTRIAL</p>
+        </div>
+        <div class="window-box" style="border-color: var(--warn);">
+            <h3 style="color: var(--warn);">⛓️ BLOCKCHAIN</h3>
+            <p>CONTRACT: 0x3AA6...</p>
+            <p>GAS: OPTIMIZED</p>
+        </div>
+    </div>
+
+    <!-- CENTER PANEL: THE MAIN STAGE -->
+    <div class="center-stage">
+        <div class="hud-header">
+            <div class="glitch">USS SOVEREIGN TITAN</div>
+            <div style="font-size: 0.7rem; color: var(--neon);">EVENT: MAYDAY 2026 | METAPORTATION LAUNCH</div>
+        </div>
+        
+        <div class="radar- NASA"></div>
+        <h2 style="text-align: center; color: var(--gold);">KING SIZE QUANTUM INTERFACE</h2>
+        <div id="log" style="font-size: 0.7rem; color: #888; padding: 20px; text-align: left; height: 100px; overflow-y: hidden;">
+            [STG] Establishing Wormhole to Zurich...<br>
+            [STG] RIPE Atlas Probe 19546 Connected...<br>
+        </div>
+        
+        <div style="padding: 20px; text-align: center;">
+            <button class="btn-quantum" onclick="warpDrive()">ENGAGE METAPORTATION (WEB 5 MODE)</button>
+        </div>
+    </div>
+
+    <!-- RIGHT PANEL: KINETIC & SWISS HUB -->
+    <div class="side-panel" style="border-left: 2px solid var(--neon);">
+        <div class="window-box">
+            <h3>🤖 H2K_KINETIC</h3>
+            <p>SENSING: BINTARO LAB</p>
+            <p>MOTOR: STANDBY</p>
+        </div>
+        <div class="window-box" style="border-color: #bc13fe;">
+            <h3 style="color: #bc13fe;">🇨🇭 SWISS_HUB</h3>
+            <p>NODE: GENEVA-G1</p>
+            <p>IPV6: ACTIVE</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playBeep(freq, duration) {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+    }
+
+    function warpDrive() {
+        playBeep(880, 0.1);
+        setTimeout(() => playBeep(1200, 0.2), 100);
+        document.getElementById('log').innerHTML += "[STG] SPACE FOLDED SUCCESSFULLY. DATA IN SWISS.<br>";
+        alert("🚀 WEB 5 METAPORTATION SUCCESS!\nNo Tools Needed. No Refresh. King Size Kedaulatan.");
+    }
+
+    setInterval(() => {
+        const log = document.getElementById('log');
+        log.innerHTML += "[SCAN] Analyzing Dark Matter Grid...<br>";
+        if (log.innerHTML.length > 500) log.innerHTML = "[STG] Buffer Cleaned.<br>";
+    }, 4000);
+</script>
+
+</body>
+</html>
