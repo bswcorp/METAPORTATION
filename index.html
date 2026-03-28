@@ -1,84 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>STG WEB 5 | SOVEREIGN AUDIO PROTOCOL</title>
+    <meta charset="UTF-8"><title>STG WEB 5 | THE READABLE GRID</title>
     <style>
-        :root { --neon: #00f2ff; --gold: #ffd700; --warn: #ff0000; --bg: #020617; }
-        body { background: var(--bg); color: white; font-family: 'Share Tech Mono', monospace; margin: 0; overflow: hidden; height: 100vh; }
-        .dashboard { display: grid; grid-template-columns: 20% 60% 20%; height: 100vh; border: 2px solid var(--neon); box-sizing: border-box; }
-        .side-panel { background: rgba(0, 242, 255, 0.05); border: 1px solid rgba(0, 242, 255, 0.2); padding: 15px; }
-        .center-stage { border-left: 2px solid var(--neon); border-right: 2px solid var(--neon); position: relative; background: radial-gradient(circle, #0a192f 0%, #020617 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .glitch { font-size: 2rem; font-weight: bold; color: var(--neon); text-transform: uppercase; letter-spacing: 5px; animation: glitch 1s linear infinite; margin-bottom: 20px; }
-        .radar { width: 180px; height: 180px; border: 2px solid var(--neon); border-radius: 50%; position: relative; margin-bottom: 20px; }
-        .radar::after { content: ""; position: absolute; width: 50%; height: 2px; background: var(--neon); top: 50%; left: 50%; transform-origin: left; animation: scan 3s linear infinite; }
-        .btn-warp { background: var(--warn); color: white; border: none; padding: 15px 30px; cursor: pointer; font-weight: bold; font-size: 1rem; letter-spacing: 2px; box-shadow: 0 0 15px var(--warn); }
-        .status-text { font-size: 0.9rem; color: var(--gold); margin-top: 15px; }
-        @keyframes scan { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        @keyframes glitch { 2% { transform: translate(2px,0); } 4% { transform: translate(-2px,0); } }
+        body { background: #020617; color: white; font-family: 'Share Tech Mono', monospace; text-align: center; padding: 20px; }
+        .naskah-box { border: 2px solid #00f2ff; background: rgba(0,242,255,0.05); padding: 20px; margin: 20px auto; max-width: 700px; text-align: left; line-height: 1.6; }
+        .btn-link { display: block; background: #ffd700; color: #000; text-decoration: none; padding: 15px; font-weight: bold; margin-top: 10px; border-radius: 5px; }
+        h1 { color: #00f2ff; border-bottom: 2px solid #00f2ff; padding-bottom: 10px; }
     </style>
 </head>
 <body>
+    <h1>🏛️ STG WEB 5.0 INDUSTRIAL SYSTEM</h1>
+    <p>BEYOND READ & WRITE: THIS IS SOVEREIGNTY</p>
 
-<div class="dashboard">
-    <div class="side-panel">
-        <p style="color:var(--neon)">📡 NODE: 19546</p>
-        <p style="font-size:0.7rem">LOC: JAKARTA_KUNINGAN</p>
-        <hr border="1" color="#111">
-        <p style="color:var(--gold)">🔐 SQID_ACTIVE</p>
-        <div id="sqid-box" style="font-size:0.7rem; color:#888;">0x7CCF...E9</div>
+    <div class="naskah-box">
+        <h3>📜 RINGKASAN NASKAH WEB 5.0:</h3>
+        <p>1. **OS INTEGRATION:** Berjalan di atas Baremetal, bukan sekadar browser.</p>
+        <p>2. **PERMANENT ARCHIVE:** Menggunakan Web 4 sebagai "Archive of Truth".</p>
+        <p>3. **QUANTUM ERA:** 180% View, Support All Extensions (PDF, CAD, AUDIO).</p>
+        <p>4. **SWISS HUB:** Jalur Transaksi Kedaulatan Tanpa Refresh.</p>
     </div>
 
-    <div class="center-stage">
-        <div class="glitch">STG GOVERNMENT</div>
-        <div class="radar"></div>
-        <button class="btn-warp" onclick="engageSovereignty()">ENGAGE WARP DRIVE</button>
-        <div id="status" class="status-text">SYSTEM READY: WAITING FOR VETO...</div>
-    </div>
+    <a href="https://github.com" class="btn-link">📖 BACA MANIFES KOLOSAL (FULL VERSION)</a>
+    <a href="https://github.com" class="btn-link">🏗️ BACA FRAMEWORK WEB 5.0 (TECHNICAL)</a>
+    <a href="https://bswcorp.github.io" class="btn-link" style="background:#ff0000; color:#fff;">🚀 MASUK KE DASHBOARD 180% (SIRKUS)</a>
 
-    <div class="side-panel">
-        <p style="color:var(--neon)">🛸 METAPORTASI</p>
-        <p style="font-size:0.7rem">DEST: ZURICH_VAULT</p>
-        <hr border="1" color="#111">
-        <p style="color:var(--warn)">⚠️ ATTENTION</p>
-        <p style="font-size:0.7rem">BEYOND ADIDAYA REACH</p>
-    </div>
-</div>
-
-<script>
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
-    function playBeep(freq, type, duration, vol) {
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.type = type;
-        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-        gain.gain.setValueAtTime(vol, audioCtx.currentTime);
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.start();
-        osc.stop(audioCtx.currentTime + duration);
-    }
-
-    function engageSovereignty() {
-        const status = document.getElementById('status');
-        status.innerHTML = "🌀 INITIALIZING WARP JUMP...";
-        
-        // PESAN SUARA KEDAULATAN (Sequence Beep)
-        playBeep(440, 'sine', 0.1, 0.1); // Low Start
-        setTimeout(() => playBeep(880, 'square', 0.1, 0.1), 150); // Mid Rise
-        setTimeout(() => {
-            playBeep(1200, 'square', 0.3, 0.2); // High Peak
-            status.innerHTML = "🚀 METAPORTATION SUCCESSFUL!";
-            status.style.color = "#4ade80";
-            alert("🏛️ KEDAULATAN DISAHKAN!\nJalur Swiss Terkunci.\nGlory to the Architect!");
-        }, 500);
-    }
-</script>
-
-<div style="margin-top:50px;"><h3 style="color:#ffd700;">📲 SCAN TO JOIN THE CIRCUS</h3><img src="https://api.qrserver.com" alt="QR CODE STG" style="border:5px solid white; border-radius:10px; box-shadow:0 0 20px #00f2ff;"></div>
-<div style="border:1px solid #4ade80; padding:10px; margin:20px auto; max-width:400px; font-size:0.7rem; color:#4ade80;">📡 SYSTEM VALIDATION: [RIPE_ATLAS_PROBE_19546_ACTIVE] <br> 🔐 ENCRYPTION: WEB4_IMMUTABLE_ON <br> 🏛️ AUTHORITY: SOVEREIGN_TITAN_GOV</div>
-<div style="background:#ff0000; color:#fff; padding:10px; font-weight:bold; font-size:0.7rem; border:2px solid #fff; margin-top:20px;">⚠️ REMOTELY COMMAND: KAMI TAHU APA YANG KAMI KERJAKAN. JANGAN AJARI IKAN BERENANG!</div>
+    <p style="margin-top:50px; color:#444;">ARCHITECT: ANDI M. HARPIANTO | PROBE ID: 19546</p>
 </body>
 </html>
