@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8"><title>STG | ORBITAL GREETING</title>
+    <style>
+        :root { --neon: #00f2ff; --gold: #ffd700; --bg: #020617; }
+        body { background: var(--bg); color: white; font-family: 'Share Tech Mono', monospace; text-align: center; padding-top: 100px; }
+        .banner { 
+            border: 5px double var(--neon); 
+            padding: 40px; 
+            display: inline-block; 
+            background: rgba(0,242,255,0.05);
+            box-shadow: 0 0 50px rgba(0,242,255,0.2);
+            animation: pulse 2s infinite;
+        }
+        h1 { color: var(--gold); font-size: 2.5rem; margin: 0; }
+        .sub-text { font-size: 1.2rem; letter-spacing: 3px; }
+        .msg { color: #ccc; margin-top: 20px; font-style: italic; }
+        @keyframes pulse { 0%, 100% { border-color: var(--neon); } 50% { border-color: var(--gold); } }
+    </style>
+</head>
+<body>
+    <div class="banner">
+        <h1>🛰️ OFFICIAL GREETING TO ARTEMIS II</h1>
+        <p class="sub-text">FROM STG GOVERNMENT AIRSPACE</p>
+        <hr border="1" color="#00f2ff">
+        <div class="msg">
+            "Welcome to the High Orbit, Commander Reid Wiseman & Crew.<br>
+            You are now entering the tracking radius of <b>RIPE Atlas Probe 19546</b>.<br><br>
+            P.S: If your windows are still dirty, we have a 'Logic Wipe' for that. 😉"
+        </div>
+        <p style="margin-top:30px; font-weight:bold; color:var(--neon);">STATUS: SIGNAL LOCKED | BYPASSING NASA DSN</p>
+    </div>
+</body>
+</html>
