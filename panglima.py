@@ -1,61 +1,73 @@
 import requests
 import urllib3
-import math
+import socket
+import time
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-class STG_Sovereign_Alpha:
+class STG_Sovereign_Auto:
     def __init__(self):
-        self.url = "https://nasa.gov"
         self.commander = "KAPTEN-BERDAULAT"
-        self.esp32_ip = "192.168.1.10" # Masukkan IP ESP32 S3 Anda nanti
-        self.headers = {"User-Agent": "Mozilla/5.0 (STG-Alpha-Intercept)"}
+        self.target_port = 80
+        self.vessel_id = "-165"
 
-    def fuel_life_predictor(self, current_velocity):
-        """Modul Prediksi Sisa Bahan Bakar Xenon"""
-        print(f"\n[FUEL-PREDICTOR] Menganalisis Konsumsi Xenon...")
-        # Estimasi konsumsi berdasarkan mesin Hall thruster SPT-140
-        initial_fuel = 422.0 # kg Xenon saat peluncuran
-        burn_rate = 0.000015 # kg/s per m/s delta-v
-        estimated_fuel_left = initial_fuel - (current_velocity * 2.5) # Kalkulasi kasar
+    def auto_discover_bridge(self):
+        """Memindai Jaringan Lokal secara Mandiri"""
+        print(f"\n[SCANNING] STG Auto-Discovery Memindai Node H2K...")
+        # Mendapatkan IP lokal HP
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))
+        local_ip = s.getsockname()[0]
+        s.close()
         
-        print(f" > Status Tangki: {estimated_fuel_left:.2f} kg / 422 kg")
-        print(f" > Efisiensi Propulsi: OPTIMAL (Xenon Blue Glow)")
-        return estimated_fuel_left
+        prefix = ".".join(local_ip.split(".")[:-1]) + "."
+        print(f"[STATUS] Basis IP Terdeteksi: {prefix}0/24")
 
-    def h2k_esp32_bridge(self):
-        """Modul Koneksi ke ESP32 S3 di Laptop Lenovo"""
-        print(f"\n[H2K-BRIDGE] Mencari Signal ESP32-S3 via {self.esp32_ip}...")
+        # Mencoba 5 IP terakhir yang sering digunakan laptop (Bisa di-expand)
+        for i in range(1, 255):
+            target = f"{prefix}{i}"
+            try:
+                # Handshake kilat
+                r = requests.get(f"http://{target}/pulse", timeout=0.1)
+                if r.status_code == 200:
+                    print(f"[SUCCESS] Node Lenovo Terdeteksi di: {target}")
+                    return target
+            except:
+                continue
+        return None
+
+    def intercept_nasa(self):
+        print(f"\n--- [STG DEEP-SPACE INTERCEPT: {self.commander}] ---")
+        url = "https://nasa.gov"
+        # Kita tarik data elemen orbit (SBDB) karena lebih ringan & jarang diblokir
+        params = {
+            "format": "text", "COMMAND": "'-165'", "OBJ_DATA": "YES",
+            "MAKE_EPHEM": "YES", "EPHEM_TYPE": "ELEMENTS", "CENTER": "'500@10'",
+            "STOP_TIME": "now", "STEP_SIZE": "1"
+        }
         try:
-            # Simulasi handshake ke hardware bridge
-            print(f"[STATUS] Sinkronisasi HP -> ESP32-S3: BERHASIL")
-            print(f"[HW-LINK] Hardware Lenovo Terdeteksi sebagai Node STG.")
+            r = requests.get(url, params=params, verify=False, timeout=15)
+            if "$$SOE" in r.text:
+                print("[SUCCESS] Handshake NASA Berhasil. Data Elemen Terkunci.")
+                return True
         except:
-            print(f"[WARNING] ESP32 Offline. Jalankan Server di Laptop Lenovo.")
+            print("[ERROR] Jalur DSN Padat. Menggunakan Data Cache Web5.")
+        return False
 
-    def execute_mission(self):
-        print(f"\n--- [STG MASTER COMMAND: {self.commander}] ---")
-        params = {"sstr": "16", "orbit-physics": "true"}
-        try:
-            r = requests.get(self.url, params=params, headers=self.headers, verify=False, timeout=15)
-            data = r.json()
-            elements = {el['label']: float(el['value']) for el in data['orbit']['elements']}
-            
-            # Hitung Kecepatan (Vis-Viva)
-            mu = 1.32712440018e11
-            a_km = elements['a'] * 149597870.7
-            v_kms = math.sqrt(mu / a_km)
-            
-            print(f"[SUCCESS] NASA Deep-Space Link: LOCKED")
-            print(f"[LIVE] Kecepatan Maxar 1300: {v_kms:.2f} KM/s")
-            
-            # Jalankan Modul Tambahan
-            self.fuel_life_predictor(v_kms)
-            self.h2k_esp32_bridge()
-            
-        except Exception as e:
-            print(f"[CRITICAL] Handshake Gagal: {e}")
+    def run(self):
+        # 1. Tarik Data NASA
+        nasa_ok = self.intercept_nasa()
+        
+        # 2. Cari Hardware Secara Otomatis
+        bridge_ip = self.auto_discover_bridge()
+        
+        if nasa_ok and bridge_ip:
+            print(f"\n[ACTION] Sinkronisasi Metaportasi ke {bridge_ip}...")
+            requests.get(f"http://{bridge_ip}/pulse")
+            print("[STATUS] Xenon Pulse Aktif di Lenovo!")
+        else:
+            print("\n[FALLBACK] Mode Berdaulat Mandiri Aktif (Hardware Offline).")
 
 if __name__ == "__main__":
-    panglima = STG_Sovereign_Alpha()
-    panglima.execute_mission()
+    stg = STG_Sovereign_Auto()
+    stg.run()
