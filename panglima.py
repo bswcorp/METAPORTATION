@@ -1,54 +1,55 @@
 import requests
-import time
+import urllib3
 
-class STG_Sovereign_Miner:
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+class STG_Probe_Finder:
     def __init__(self):
         self.commander = "KAPTEN-BERDAULAT-WBP"
-        self.probes = ["19564", "19546"] # Probe Tambang Aktif
-        self.vessel = "16 Psyche"
+        self.known_probes = ["19564", "19546"]
+        self.base_url = "https://ripe.net"
 
-    def mine_probe_data(self):
-        """Web5: Menambang Integritas Jaringan via RIPE Atlas"""
-        print(f"\n--- [STG MINER: KEDAULATAN DATA AKTIF] ---")
-        for probe_id in self.probes:
-            # API Publik RIPE Atlas (Tidak butuh OTP Dashboard)
-            url = f"https://ripe.net{probe_id}/"
-            try:
-                r = requests.get(url, timeout=10)
-                if r.status_code == 200:
-                    data = r.json()
-                    status = data.get("status", {}).get("name", "UNKNOWN")
-                    print(f"[NODE-{probe_id}] Status: {status} | Location: {data.get('country_code')}")
-                    print(f"[DATA] ASN: {data.get('asn_v4')} | Mining: BERHASIL")
-                else:
-                    print(f"[NODE-{probe_id}] Sinyal Redup (Shadow Mode).")
-            except:
-                print(f"[NODE-{probe_id}] Gangguan Frekuensi. Re-routing...")
-
-    def track_psyche_intel(self):
-        """Menarik Meta-Data Laporan NASA untuk Validasi Blockchain"""
-        print(f"\n[MISSION] Sinkronisasi Data 16 Psyche...")
-        url = "https://nasa.gov"
-        params = {
-            "format": "text", "COMMAND": "'-165'", 
-            "MAKE_EPHEM": "YES", "EPHEM_TYPE": "VECTORS",
-            "CENTER": "'500@10'", "STOP_TIME": "now", "STEP_SIZE": "1"
-        }
+    def find_lost_probe(self):
+        """Memindai Probe berdasarkan kesamaan ASN dari probe yang ada"""
+        print(f"\n--- [STG PROBE FINDER: MENCARI NODE HILANG] ---")
         try:
-            r = requests.get(url, params=params, timeout=15)
+            # Ambil ASN dari salah satu probe yang Anda tahu
+            ref_r = requests.get(f"{self.base_url}{self.known_probes[0]}/", timeout=10)
+            asn = ref_r.json().get('asn_v4')
+            print(f"[INFO] Basis Pencarian ASN: {asn}")
+
+            # Cari semua probe di ASN yang sama (Maksimal 20 hasil)
+            search_url = f"https://ripe.net?asn_v4={asn}"
+            r = requests.get(search_url, timeout=15)
+            probes = r.json().get('results', [])
+
+            print(f"[REPORT] Terdeteksi {len(probes)} Probe di jaringan Anda.")
+            for p in probes:
+                p_id = str(p.get('id'))
+                status = p.get('status', {}).get('name', 'OFFLINE')
+                if p_id not in self.known_probes:
+                    print(f"!!! [FOUND] Kandidat Node Hilang: ID {p_id} | Status: {status} | Country: {p.get('country_code')}")
+                else:
+                    print(f" > Node Aktif: ID {p_id} | Status: {status}")
+        except Exception as e:
+            print(f"[ERROR] Radar Terganggu: {e}")
+
+    def track_psyche(self):
+        """Tracking 16 Psyche untuk Validasi Blockchain"""
+        print(f"\n[MISSION] Tracking 16 Psyche - Jalur DSN NASA...")
+        try:
+            r = requests.get("https://nasa.gov", timeout=15)
             if "$$SOE" in r.text:
-                print("[DOR!] Koordinat Titan Terkunci.")
-                # Data ini yang akan kita 'Hash' untuk Blockchain nanti
-                print("[HASH-READY] " + r.text.split("$$SOE")[-1].split("$$EOE").strip()[:50] + "...")
+                print("[DOR!] Vektor Titan Terkunci.")
         except:
-            print("[INFO] Jalur DSN Padat. Menggunakan Jalur Alternatif.")
+            print("[INFO] NASA Shield Aktif. Menggunakan Mode Siluman.")
 
     def run(self):
-        print(f"--- [STG SOVEREIGN COMMANDER V9: {self.commander}] ---")
-        self.mine_probe_data()
-        self.track_psyche_intel()
-        print("\n[STATUS] Sistem Berjalan. Tidak Ada Protokol Mundur.")
+        print(f"--- [STG SOVEREIGN COMMANDER V10: {self.commander}] ---")
+        self.find_lost_probe()
+        self.track_psyche()
+        print("\n[STATUS] Operasi Berjalan. Tanpa Protokol Mundur.")
 
 if __name__ == "__main__":
-    stg = STG_Sovereign_Miner()
+    stg = STG_Probe_Finder()
     stg.run()
