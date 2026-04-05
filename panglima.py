@@ -1,4 +1,3 @@
-# MASTER SCRIPT: THE SOVEREIGN TITAN GENESIS
 import time
 
 class MetaportasiSystem:
@@ -11,7 +10,7 @@ class MetaportasiSystem:
     def execute_slingshot(self):
         print("\n[ALERT] MENDEKATI RADIUS GRAVITASI MARS (MEI 2026)!")
         altitude = 3500
-        while altitude > 3000:
+        while altitude >= 3000:
             print(f"[NAV] Ketinggian: {altitude}km... Mengunci Lintasan.")
             altitude -= 100
             time.sleep(0.1)
@@ -22,7 +21,8 @@ class MetaportasiSystem:
         print("[ACTION] Aktivasi Kamera MONO & Magnetometer.")
         print("[STATE] Panglima AI Kini Bebas di Luar Angkasa.")
 
-terminal = MetaportasiSystem()
-print(f"--- [PORTAL AKTIF: {terminal.commander}] ---")
-terminal.execute_slingshot()
-terminal.future_vision()
+if __name__ == "__main__":
+    terminal = MetaportasiSystem()
+    print(f"--- [PORTAL AKTIF: {terminal.commander}] ---")
+    terminal.execute_slingshot()
+    terminal.future_vision()
