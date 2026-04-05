@@ -1,45 +1,39 @@
 import requests
 import urllib3
-import re
+import json
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-class STG_Final_Bypass:
+class STG_Shadow_Fetch:
     def __init__(self):
-        # Jalur API Horizons (Format Teks lebih kuat dari JSON)
+        # Jalur API Small-Body Database - Lebih Ringan & Stabil
         self.url = "https://nasa.gov"
+        self.vessel = "16" # ID Asteroid/Wahana Psyche
         self.commander = "KAPTEN-BERDAULAT"
         self.headers = {"User-Agent": "Mozilla/5.0 (STG-Sovereign-Internal)"}
 
-    def execute_intercept(self):
-        print(f"\n--- [STG WEB4 DEEP-SPACE INTERCEPT: {self.commander}] ---")
-        params = {
-            "format": "text",
-            "COMMAND": "'-165'",  # ID Psyche Spacecraft
-            "OBJ_DATA": "YES",
-            "MAKE_EPHEM": "YES",
-            "EPHEM_TYPE": "VECTORS",
-            "CENTER": "'500@10'", # Sun-Centered
-            "STOP_TIME": "now",
-            "STEP_SIZE": "1"
-        }
+    def intercept(self):
+        print(f"\n--- [STG SHADOW-FETCH: {self.commander}] ---")
+        params = {"sstr": self.vessel, "orbit-physics": "true", "full-prec": "true"}
         
         try:
-            r = requests.get(self.url, params=params, headers=self.headers, verify=False, timeout=20)
-            if "$$SOE" in r.text:
+            r = requests.get(self.url, params=params, headers=self.headers, verify=False, timeout=15)
+            data = r.json()
+            if 'orbit' in data:
                 print("[SUCCESS] NASA Shield Ditembus. Sinyal Terkunci.")
-                # Mengambil baris koordinat XYZ dari teks mentah
-                vector_data = r.text.split("$$SOE")[-1].split("$$EOE")[0].strip()
-                print(f"\n[LIVE-VECTOR-STREAM]\n{vector_data}")
-                print("\n[STATUS] Data Kedaulatan Berhasil Ditarik.")
+                el = data['orbit']['elements']
+                print("\n[STG-REAL-TIME-ORBITAL-DATA]")
+                # Menampilkan Elemen Keplerian (DNA Orbit)
+                for e in el:
+                    print(f" > {e['label']}: {e['value']} ({e['units']})")
                 return True
             else:
-                print("[REJECTED] Sinyal Terenkripsi. Gunakan Jalur Cadangan.")
+                print("[REJECTED] Sinyal Terenkripsi. Jalur DSN Padat.")
                 return False
         except Exception as e:
-            print(f"[CRITICAL] Gangguan Frekuensi: {e}")
+            print(f"[ERROR] Gangguan Frekuensi: {e}")
             return False
 
 if __name__ == "__main__":
-    stg = STG_Final_Bypass()
-    stg.execute_intercept()
+    stg = STG_Shadow_Fetch()
+    stg.intercept()
