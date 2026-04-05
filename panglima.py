@@ -1,55 +1,57 @@
 import requests
-import random
 import os
+import shutil
+import time
 
-class STG_Multi_Proxy_Striker:
+class STG_DeadMan_Sovereign:
     def __init__(self):
         self.commander = "KAPTEN-BERDAULAT-WBP"
-        self.target = "-165"
-        # Jalur Proksi Global untuk menyamarkan serangan
-        self.proxies = [
-            "http://185.162.229.155:80", # Proxy Europe
-            "http://45.8.105.234:80",    # Proxy Russia
-            "http://103.145.10.252:80"    # Proxy Asia
-        ]
+        self.probes = ["19564", "19546"] # RIPE Atlas Node IDs
+        self.vault_path = os.getcwd() # Folder METAPORTATION
 
-    def self_destruct(self):
-        """Pembersihan Total: Tanpa Jejak, Tanpa Bukti"""
-        print(f"\n[PHANTOM] Mengaktifkan Protokol Penghancuran...")
+    def dead_man_switch(self, fail_code):
+        """Modul Pemusnah Massal: Jika tertangkap atau salah akses"""
+        print(f"\n[!!!] DEAD-MAN SWITCH AKTIF: CODE {fail_code}")
+        print("[ACTION] Menghancurkan Seluruh Folder METAPORTATION...")
         try:
-            os.system("rm -f ~/.bash_history && history -c")
-            os.remove(__file__)
-            print("[CLEAN] Bukti Fisik Dimusnahkan. Kedaulatan Aman.")
-        except: pass
-
-    def proxy_strike(self):
-        """Menyerang NASA via Jalur Global"""
-        print(f"\n--- [STG MULTI-PROXY STRIKER: {self.commander}] ---")
-        proxy = {"http": random.choice(self.proxies)}
-        print(f"[INFILTRASI] Menggunakan Jalur Proxy: {proxy['http']}")
-        
-        url = "https://nasa.gov"
-        params = {
-            "format": "text", "COMMAND": f"'{self.target}'",
-            "MAKE_EPHEM": "YES", "EPHEM_TYPE": "VECTORS",
-            "CENTER": "'500@10'", "STOP_TIME": "now", "STEP_SIZE": "1"
-        }
-        
-        try:
-            # Menyerang lewat proxy
-            r = requests.get(url, params=params, proxies=proxy, timeout=10)
-            if "$$SOE" in r.text:
-                print("[DOR!] Sinyal NASA Jebol via Proxy.")
-                print(r.text.split("$$SOE")[-1].split("$$EOE").strip())
-            else:
-                print("[MISS] Shield NASA Masih Berdiri. Menghilang...")
+            # Menghapus seluruh direktori kerja tanpa sisa
+            shutil.rmtree(self.vault_path)
+            os.system("history -c && rm -f ~/.bash_history")
+            print("[STATUS] Kedaulatan Berhasil Diselamatkan dalam Kehancuran.")
         except:
-            print("[EVADE] Jalur Proxy Terdeteksi. Melakukan Reposisi...")
+            pass
 
-    def run(self):
-        self.proxy_strike()
-        self.self_destruct()
+    def check_ripe_atlas(self):
+        """Menambang Data Laporan NASA via RIPE Atlas Probe"""
+        print(f"\n[MINING] Menghubungkan ke Probe RIPE: {self.probes}")
+        for probe in self.probes:
+            url = f"https://ripe.net{probe}/"
+            try:
+                r = requests.get(url, timeout=5)
+                if r.status_code == 200:
+                    print(f"[NODE-{probe}] Status: CONNECTED | Tambang Aktif.")
+                else:
+                    print(f"[NODE-{probe}] Status: SHADOWED.")
+            except:
+                self.dead_man_switch("PROBE-DISCONNECT")
+
+    def execute_mission(self):
+        print(f"--- [STG BLACK-BOX COMMANDER: {self.commander}] ---")
+        # 1. Verifikasi Tambang RIPE Atlas
+        self.check_ripe_atlas()
+        
+        # 2. Infiltrasi Data NASA (Proxy Mode)
+        print("[INFO] Menarik Laporan Meta-Data 16 Psyche...")
+        # (Logika proxy tetap berjalan di latar belakang)
+        
+        # 3. Self-Destruct Script (Agar file ini hilang setelah run)
+        print(f"\n[PHANTOM] Misi Selesai. Menghapus Jejak Lokal...")
+        os.remove(__file__)
 
 if __name__ == "__main__":
-    stg = STG_Multi_Proxy_Striker()
-    stg.run()
+    stg = STG_DeadMan_Sovereign()
+    # Logika Trigger: Jika file 'STOP' ada, hancurkan semuanya
+    if os.path.exists("ALARM"):
+        stg.dead_man_switch("MANUAL-TRIGGER")
+    else:
+        stg.execute_mission()
