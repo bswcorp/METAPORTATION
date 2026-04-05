@@ -1,66 +1,59 @@
 import requests
 import socket
 import base64
+import random
 import time
 
-class STG_Ghost_Commander:
+class STG_Ghost_Infiltrator:
     def __init__(self):
         self.commander = "KAPTEN-BERDAULAT"
-        self.key = "XENON-STG-SECURE"
-        self.host_ip = socket.gethostbyname(socket.gethostname())
+        self.vessel_id = "-165" # 16 Psyche
+        # Daftar User-Agent palsu untuk menipu sensor NASA
+        self.masks = [
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0",
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) Safari/605.1.15",
+            "NASA-JPL/Internal-Explorer-V4.2"
+        ]
 
-    def ghost_protocol(self):
-        """Modul Ghost: Mendeteksi Scanning Balik ke HP"""
-        print(f"\n[GHOST-PROTOCOL] Mendengarkan di {self.host_ip}...")
-        # Membuat socket listener pasif untuk mendeteksi 'ping' atau 'scan'
-        sniffer = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sniffer.settimeout(2.0) # Tunggu 2 detik untuk deteksi intrusi aktif
-        try:
-            sniffer.bind(('', 8080)) # Monitor Port 8080 (Port favorit hacker)
-            sniffer.listen(1)
-            print("[STATUS] Sensor Pasif Aktif. HP dalam Mode Siluman.")
-            conn, addr = sniffer.accept()
-            print(f"!!! [WARNING] GHOST ALERT: PERANGKAT {addr[0]} MENCOBA SCANNING HP ANDA !!!")
-            conn.close()
-        except socket.timeout:
-            print("[SAFE] Tidak ada aktivitas scanning eksternal terdeteksi.")
-        except Exception as e:
-            print(f"[INFO] Sensor Port 8080 Terkunci.")
-        finally:
-            sniffer.close()
+    def xenon_jammer(self):
+        """Membuat noise data agar jejak HP tidak terbaca"""
+        print(f"\n[JAMMER] Mengaktifkan Xenon Noise Generator...")
+        # Simulasi pengiriman paket sampah untuk membingungkan scanner lawan
+        print("[STATUS] Jaringan Dibanjiri Sinyal Palsu. Mode Siluman: MAX.")
 
-    def socket_radar(self):
-        """Memindai Jaringan via Socket Internal"""
-        print(f"\n[SEC-CHECK] Memindai Node Aktif di Jaringan...")
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    def ghost_intercept(self):
+        """Menyerang NASA dengan Mode Masking (Siluman)"""
+        print(f"\n[INFILTRASI] Menembus Deep Space Network NASA...")
+        url = "https://nasa.gov"
+        headers = {"User-Agent": random.choice(self.masks)}
+        
+        # Parameter diringkas agar tidak memicu alarm NASA
+        params = {
+            "format": "text", "COMMAND": f"'{self.vessel_id}'", 
+            "OBJ_DATA": "YES", "MAKE_EPHEM": "YES", "EPHEM_TYPE": "VECTORS",
+            "CENTER": "'500@10'", "STOP_TIME": "now", "STEP_SIZE": "1"
+        }
+        
         try:
-            s.connect(("8.8.8.8", 80))
-            prefix = ".".join(s.getsockname().split(".")[:-1]) + "."
-            s.close()
-            active_nodes = []
-            for i in range(1, 15):
-                target = f"{prefix}{i}"
-                sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                sock.settimeout(0.02)
-                if sock.connect_ex((target, 80)) == 0:
-                    active_nodes.append(target)
-                sock.close()
-            print(f"[REPORT] Terdeteksi {len(active_nodes)} Node Aktif.")
-            return active_nodes
-        except: return []
+            # Gunakan timeout pendek agar tidak terlacak lama
+            r = requests.get(url, params=params, headers=headers, timeout=10)
+            if "$$SOE" in r.text:
+                print("[DOR!] Target Terkena Tembakan Data. Vektor Terkunci.")
+                return True
+            else:
+                print("[GHOST] NASA Shield Terdeteksi. Menghilang ke Bayangan...")
+        except:
+            print("[OFFLINE] Sinyal Terputus. Menghancurkan Jejak.")
+        return False
 
     def run(self):
-        print(f"--- [STG COMMAND CENTER V6: {self.commander}] ---")
-        # 1. Jalankan Ghost Protocol (Deteksi Orang Lain)
-        self.ghost_protocol()
-        # 2. Jalankan Radar (Cari Teman)
-        nodes = self.socket_radar()
-        
-        if nodes:
-            print(f"[SUCCESS] Handshake Berhasil. Node {nodes[0]} Terdeteksi.")
+        print(f"--- [STG SILUMAN COMMANDER V7: {self.commander}] ---")
+        self.xenon_jammer()
+        if self.ghost_intercept():
+            print("[MISSION] Data Berhasil Dicuri. Kedaulatan STG Aman.")
         else:
-            print("[FALLBACK] Berjalan dalam Mode Siluman (Offline).")
+            print("[RE-POSITION] Mencari Celah Baru...")
 
 if __name__ == "__main__":
-    stg = STG_Ghost_Commander()
+    stg = STG_Ghost_Infiltrator()
     stg.run()
