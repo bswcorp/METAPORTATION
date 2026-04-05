@@ -29,7 +29,10 @@ class STG_Sovereign_Bypass:
                 
                 print("\n[STG-REAL-TIME-ORBITAL-DATA]")
                 for el in orbit:
-                    print(f" > {el['label']}: {el['value']} {el.get('units', '')}")
+                    label = el.get('label', 'N/A')
+                    value = el.get('value', 'N/A')
+                    units = el.get('units', '')
+                    print(f" > {label}: {value} {units}")
                 
                 print(f"\n[STATUS] Kedaulatan STG Terverifikasi pada HP {self.commander}")
                 return True
