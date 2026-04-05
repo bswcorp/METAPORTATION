@@ -1,49 +1,51 @@
 import requests
 import urllib3
-from datetime import datetime, timedelta
+import math
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-class STG_Sovereign_Vektor:
+class STG_Sovereign_Bypass:
     def __init__(self):
+        # Jalur SBDB: Lebih stabil dan jarang diblokir NASA
         self.url = "https://nasa.gov"
+        self.vessel = "16" # ID Asteroid/Wahana Psyche
         self.commander = "KAPTEN-BERDAULAT"
-        self.headers = {"User-Agent": "STG-Command-Center/1.0"}
+        self.headers = {"User-Agent": "Mozilla/5.0 (STG-Sovereign-Internal)"}
 
-    def capture_vectors(self):
-        print(f"\n--- [STG VECTOR INTERCEPT: {self.commander}] ---")
-        
-        # Mengatur waktu 10 menit yang lalu agar data "pasti tersedia" di database NASA
-        past_time = (datetime.utcnow() - timedelta(minutes=10)).strftime('%Y-%m-%d %H:%M')
-        end_time = (datetime.utcnow() - timedelta(minutes=9)).strftime('%Y-%m-%d %H:%M')
-        
-        params = {
-            "format": "text",
-            "COMMAND": "'-165'",  # ID Pesawat Psyche
-            "OBJ_DATA": "NO",
-            "MAKE_EPHEM": "YES",
-            "EPHEM_TYPE": "VECTORS",
-            "CENTER": "'500@10'", # Pusat Matahari
-            "START_TIME": past_time,
-            "STOP_TIME": end_time,
-            "STEP_SIZE": "1m"
-        }
+    def capture_elements(self):
+        print(f"\n--- [STG SHADOW-FETCH: {self.commander}] ---")
+        params = {"sstr": self.vessel, "orbit-physics": "true", "full-prec": "true"}
         
         try:
-            r = requests.get(self.url, params=params, headers=self.headers, verify=False, timeout=25)
-            if "$$SOE" in r.text:
-                print("[SUCCESS] Handshake Berhasil. Sinyal Vektor Terkunci!")
-                # Ambil data koordinat XYZ di antara marker SOE dan EOE
-                vector_data = r.text.split("$$SOE")[-1].split("$$EOE").strip()
-                print(f"\n[LIVE-VECTOR-STREAM]\n{vector_data}")
+            r = requests.get(self.url, params=params, headers=self.headers, verify=False, timeout=20)
+            data = r.json()
+            if 'orbit' in data:
+                print("[SUCCESS] NASA Shield Ditembus. Sinyal Terkunci.")
+                el = data['orbit']['elements']
+                
+                # Mengambil Semi-major axis (a) untuk hitung kecepatan
+                a_au = float(next(item['value'] for item in el if item['label'] == 'a'))
+                
+                # Fisika: v = sqrt(GM/a)
+                # GM Matahari = 1.327e11 km^3/s^2, 1 AU = 149.6e6 km
+                mu = 1.3271244e11
+                a_km = a_au * 149597870.7
+                v_kms = math.sqrt(mu / a_km)
+                
+                print("\n[LIVE-ORBITAL-ELEMENTS]")
+                for e in el:
+                    print(f" > {e['label']}: {e['value']} ({e['units']})")
+                
+                print(f"\n[ANALYSIS] Kecepatan Orbit Saat Ini: {v_kms:.2f} KM/s")
+                print(f"[STATUS] Kedaulatan STG Terverifikasi.")
                 return True
             else:
-                print("[REJECTED] NASA Shield Masih Aktif. Gunakan Cadangan SBDB.")
+                print("[REJECTED] Sinyal Terenkripsi. Jalur DSN Padat.")
                 return False
         except Exception as e:
             print(f"[ERROR] Gangguan Frekuensi: {e}")
             return False
 
 if __name__ == "__main__":
-    nav = STG_Sovereign_Vektor()
-    nav.capture_vectors()
+    stg = STG_Sovereign_Bypass()
+    stg.capture_elements()
