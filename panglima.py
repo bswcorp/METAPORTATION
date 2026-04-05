@@ -1,67 +1,66 @@
 import requests
-import urllib3
 import socket
-import os
+import base64
 import time
 
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-
-class STG_Sovereign_Final:
+class STG_Ghost_Commander:
     def __init__(self):
         self.commander = "KAPTEN-BERDAULAT"
-        self.known_devices = [] # Daftar IP yang pernah terdeteksi
-        self.vessel = "16 Psyche"
+        self.key = "XENON-STG-SECURE"
+        self.host_ip = socket.gethostbyname(socket.gethostname())
 
-    def intrusion_check(self, prefix):
-        """Modul Intrusion: Mendeteksi Perangkat Asing di Jaringan"""
-        print(f"\n[SEC-CHECK] Memindai Intrusi Hardware di {prefix}0/24...")
-        # Menggunakan perintah 'arp -a' untuk melihat siapa saja yang terhubung
-        devices = os.popen('arp -a').read()
-        current_count = devices.count("(")
-        
-        print(f"[REPORT] Terdeteksi {current_count} perangkat aktif.")
-        if current_count > 3: # Asumsi: HP, Laptop, ESP32 (Lebih dari itu = ASING)
-            print("!!! [WARNING] INTRUSI TERDETEKSI: PERANGKAT ASING DI JARINGAN !!!")
-        else:
-            print("[SAFE] Jaringan Berdaulat Bersih.")
+    def ghost_protocol(self):
+        """Modul Ghost: Mendeteksi Scanning Balik ke HP"""
+        print(f"\n[GHOST-PROTOCOL] Mendengarkan di {self.host_ip}...")
+        # Membuat socket listener pasif untuk mendeteksi 'ping' atau 'scan'
+        sniffer = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sniffer.settimeout(2.0) # Tunggu 2 detik untuk deteksi intrusi aktif
+        try:
+            sniffer.bind(('', 8080)) # Monitor Port 8080 (Port favorit hacker)
+            sniffer.listen(1)
+            print("[STATUS] Sensor Pasif Aktif. HP dalam Mode Siluman.")
+            conn, addr = sniffer.accept()
+            print(f"!!! [WARNING] GHOST ALERT: PERANGKAT {addr[0]} MENCOBA SCANNING HP ANDA !!!")
+            conn.close()
+        except socket.timeout:
+            print("[SAFE] Tidak ada aktivitas scanning eksternal terdeteksi.")
+        except Exception as e:
+            print(f"[INFO] Sensor Port 8080 Terkunci.")
+        finally:
+            sniffer.close()
 
-    def auto_discover(self):
-        """Auto-Discovery Node H2K"""
-        print(f"\n[SCANNING] Mencari Node Lenovo/ESP32...")
+    def socket_radar(self):
+        """Memindai Jaringan via Socket Internal"""
+        print(f"\n[SEC-CHECK] Memindai Node Aktif di Jaringan...")
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         try:
             s.connect(("8.8.8.8", 80))
-            local_ip = s.getsockname()[0]
+            prefix = ".".join(s.getsockname().split(".")[:-1]) + "."
             s.close()
-            prefix = ".".join(local_ip.split(".")[:-1]) + "."
-            
-            # Jalankan Intrusion Check sebelum Scanning
-            self.intrusion_check(prefix)
-            
-            # Scanning cepat 10 IP terakhir (biasanya DHCP mulai dari belakang atau depan)
-            for i in [1, 2, 10, 15, 100, 101, 105]: 
+            active_nodes = []
+            for i in range(1, 15):
                 target = f"{prefix}{i}"
-                try:
-                    r = requests.get(f"http://{target}/pulse", timeout=0.2)
-                    if r.status_code == 200:
-                        print(f"[SUCCESS] Node Ditemukan: {target}")
-                        return target
-                except: continue
-            return None
-        except:
-            return None
+                sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                sock.settimeout(0.02)
+                if sock.connect_ex((target, 80)) == 0:
+                    active_nodes.append(target)
+                sock.close()
+            print(f"[REPORT] Terdeteksi {len(active_nodes)} Node Aktif.")
+            return active_nodes
+        except: return []
 
-    def execute(self):
-        print(f"--- [STG MASTER CONTROL: {self.commander}] ---")
-        print(f"[MISSION] Tracking {self.vessel} - Mars Flyby 2026")
+    def run(self):
+        print(f"--- [STG COMMAND CENTER V6: {self.commander}] ---")
+        # 1. Jalankan Ghost Protocol (Deteksi Orang Lain)
+        self.ghost_protocol()
+        # 2. Jalankan Radar (Cari Teman)
+        nodes = self.socket_radar()
         
-        node = self.auto_discover()
-        if node:
-            print(f"[ACTION] Sinkronisasi Pulse ke {node}...")
-            requests.get(f"http://{node}/pulse", timeout=1)
+        if nodes:
+            print(f"[SUCCESS] Handshake Berhasil. Node {nodes[0]} Terdeteksi.")
         else:
-            print("[FALLBACK] Hardware Offline. Menjalankan Mode Mandiri.")
+            print("[FALLBACK] Berjalan dalam Mode Siluman (Offline).")
 
 if __name__ == "__main__":
-    stg = STG_Sovereign_Final()
-    stg.execute()
+    stg = STG_Ghost_Commander()
+    stg.run()
