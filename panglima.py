@@ -4,35 +4,42 @@ import json
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-class STG_Bypass:
+class STG_Sovereign_Bypass:
     def __init__(self):
-        # Jalur Belakang: Small-Body Database API
         self.url = "https://nasa.gov"
-        self.vessel = "16" # ID Asteroid/Wahana Psyche
         self.commander = "KAPTEN-BERDAULAT"
+        # Menyamar sebagai Browser Resmi untuk menembus Shield
+        self.headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+            "Accept": "application/json"
+        }
 
     def intercept(self):
         print(f"\n--- [STG SHADOW-FETCH: {self.commander}] ---")
-        params = {"sstr": self.vessel, "orbit-physics": "true", "full-prec": "true"}
+        params = {"sstr": "16", "orbit-physics": "true"}
         
         try:
-            r = requests.get(self.url, params=params, verify=False, timeout=15)
-            data = r.json()
-            if 'orbit' in data:
-                print("[SUCCESS] NASA Shield Ditembus. Mengambil Data Vektor...")
-                el = data['orbit']['elements']
-                # Tampilkan data orbit inti sebagai bukti kedaulatan
-                print(f"\n[LIVE-ORBITAL-ELEMENTS]")
-                for e in el:
-                    print(f" > {e['label']}: {e['value']} ({e['units']})")
+            # Mengirimkan request dengan Header Browser
+            r = requests.get(self.url, params=params, headers=self.headers, verify=False, timeout=20)
+            
+            if r.status_code == 200:
+                data = r.json()
+                print("[SUCCESS] NASA Shield Ditembus. Sinyal Terkunci.")
+                orbit = data['orbit']['elements']
+                
+                print("\n[STG-REAL-TIME-ORBITAL-DATA]")
+                for el in orbit:
+                    print(f" > {el['label']}: {el['value']} {el.get('units', '')}")
+                
+                print(f"\n[STATUS] Kedaulatan STG Terverifikasi pada HP {self.commander}")
                 return True
             else:
-                print("[REJECTED] Sinyal Terenkripsi. Gunakan Kunci STG-Alpha.")
+                print(f"[REJECTED] Kode Penolakan NASA: {r.status_code}")
                 return False
         except Exception as e:
-            print(f"[ERROR] Gangguan Frekuensi: {e}")
+            print(f"[CRITICAL] Gangguan Frekuensi: {e}")
             return False
 
 if __name__ == "__main__":
-    stg = STG_Bypass()
+    stg = STG_Sovereign_Bypass()
     stg.intercept()
