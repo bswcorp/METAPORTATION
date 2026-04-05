@@ -1,51 +1,50 @@
 import requests
 import urllib3
-import math
+import re
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-class STG_Sovereign_Bypass:
+class STG_Alpha_Infiltrator:
     def __init__(self):
-        # Jalur SBDB: Lebih stabil dan jarang diblokir NASA
+        # Jalur Text-Based JPL (Paling Bandel)
         self.url = "https://nasa.gov"
-        self.vessel = "16" # ID Asteroid/Wahana Psyche
         self.commander = "KAPTEN-BERDAULAT"
-        self.headers = {"User-Agent": "Mozilla/5.0 (STG-Sovereign-Internal)"}
+        self.headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        }
 
-    def capture_elements(self):
-        print(f"\n--- [STG SHADOW-FETCH: {self.commander}] ---")
-        params = {"sstr": self.vessel, "orbit-physics": "true", "full-prec": "true"}
+    def intercept(self):
+        print(f"\n--- [STG ALPHA INFILTRATION: {self.commander}] ---")
+        params = {
+            "format": "text", # Kita minta format teks, bukan JSON
+            "COMMAND": "'-165'", # ID Wahana Psyche
+            "OBJ_DATA": "YES",
+            "MAKE_EPHEM": "YES",
+            "EPHEM_TYPE": "VECTORS",
+            "CENTER": "'500@10'",
+            "STOP_TIME": "now",
+            "STEP_SIZE": "1"
+        }
         
         try:
             r = requests.get(self.url, params=params, headers=self.headers, verify=False, timeout=20)
-            data = r.json()
-            if 'orbit' in data:
-                print("[SUCCESS] NASA Shield Ditembus. Sinyal Terkunci.")
-                el = data['orbit']['elements']
-                
-                # Mengambil Semi-major axis (a) untuk hitung kecepatan
-                a_au = float(next(item['value'] for item in el if item['label'] == 'a'))
-                
-                # Fisika: v = sqrt(GM/a)
-                # GM Matahari = 1.3271244e11 km^3/s^2, 1 AU = 149,597,870.7 km
-                mu = 1.3271244e11
-                a_km = a_au * 149597870.7
-                v_kms = math.sqrt(mu / a_km)
-                
-                print("\n[LIVE-ORBITAL-ELEMENTS]")
-                for e in el:
-                    print(f" > {e['label']}: {e['value']} ({e['units']})")
-                
-                print(f"\n[ANALYSIS] Kecepatan Orbit Saat Ini: {v_kms:.2f} KM/s")
-                print(f"[STATUS] Kedaulatan STG Terverifikasi.")
+            content = r.text
+            
+            if "$$SOE" in content:
+                print("[SUCCESS] NASA Radio Shield Ditembus. Sinyal Terkunci.")
+                # Mengambil data Vektor XYZ
+                data_stream = content.split("$$SOE")[-1].split("$$EOE")[0].strip()
+                print("\n[STG-LIVE-VECTOR-STREAM]")
+                print(data_stream)
+                print("\n[STATUS] Data Kedaulatan Berhasil Ditarik.")
                 return True
             else:
-                print("[REJECTED] Sinyal Terenkripsi. Jalur DSN Padat.")
+                print("[REJECTED] Sinyal Terenkripsi. Gunakan Jalur Darurat.")
                 return False
         except Exception as e:
-            print(f"[ERROR] Gangguan Frekuensi: {e}")
+            print(f"[CRITICAL] Handshake Gagal: {e}")
             return False
 
 if __name__ == "__main__":
-    stg = STG_Sovereign_Bypass()
-    stg.capture_elements()
+    stg = STG_Alpha_Infiltrator()
+    stg.intercept()
