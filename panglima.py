@@ -1,73 +1,67 @@
 import requests
 import urllib3
 import socket
+import os
 import time
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-class STG_Sovereign_Auto:
+class STG_Sovereign_Final:
     def __init__(self):
         self.commander = "KAPTEN-BERDAULAT"
-        self.target_port = 80
-        self.vessel_id = "-165"
+        self.known_devices = [] # Daftar IP yang pernah terdeteksi
+        self.vessel = "16 Psyche"
 
-    def auto_discover_bridge(self):
-        """Memindai Jaringan Lokal secara Mandiri"""
-        print(f"\n[SCANNING] STG Auto-Discovery Memindai Node H2K...")
-        # Mendapatkan IP lokal HP
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        s.connect(("8.8.8.8", 80))
-        local_ip = s.getsockname()[0]
-        s.close()
+    def intrusion_check(self, prefix):
+        """Modul Intrusion: Mendeteksi Perangkat Asing di Jaringan"""
+        print(f"\n[SEC-CHECK] Memindai Intrusi Hardware di {prefix}0/24...")
+        # Menggunakan perintah 'arp -a' untuk melihat siapa saja yang terhubung
+        devices = os.popen('arp -a').read()
+        current_count = devices.count("(")
         
-        prefix = ".".join(local_ip.split(".")[:-1]) + "."
-        print(f"[STATUS] Basis IP Terdeteksi: {prefix}0/24")
-
-        # Mencoba 5 IP terakhir yang sering digunakan laptop (Bisa di-expand)
-        for i in range(1, 255):
-            target = f"{prefix}{i}"
-            try:
-                # Handshake kilat
-                r = requests.get(f"http://{target}/pulse", timeout=0.1)
-                if r.status_code == 200:
-                    print(f"[SUCCESS] Node Lenovo Terdeteksi di: {target}")
-                    return target
-            except:
-                continue
-        return None
-
-    def intercept_nasa(self):
-        print(f"\n--- [STG DEEP-SPACE INTERCEPT: {self.commander}] ---")
-        url = "https://nasa.gov"
-        # Kita tarik data elemen orbit (SBDB) karena lebih ringan & jarang diblokir
-        params = {
-            "format": "text", "COMMAND": "'-165'", "OBJ_DATA": "YES",
-            "MAKE_EPHEM": "YES", "EPHEM_TYPE": "ELEMENTS", "CENTER": "'500@10'",
-            "STOP_TIME": "now", "STEP_SIZE": "1"
-        }
-        try:
-            r = requests.get(url, params=params, verify=False, timeout=15)
-            if "$$SOE" in r.text:
-                print("[SUCCESS] Handshake NASA Berhasil. Data Elemen Terkunci.")
-                return True
-        except:
-            print("[ERROR] Jalur DSN Padat. Menggunakan Data Cache Web5.")
-        return False
-
-    def run(self):
-        # 1. Tarik Data NASA
-        nasa_ok = self.intercept_nasa()
-        
-        # 2. Cari Hardware Secara Otomatis
-        bridge_ip = self.auto_discover_bridge()
-        
-        if nasa_ok and bridge_ip:
-            print(f"\n[ACTION] Sinkronisasi Metaportasi ke {bridge_ip}...")
-            requests.get(f"http://{bridge_ip}/pulse")
-            print("[STATUS] Xenon Pulse Aktif di Lenovo!")
+        print(f"[REPORT] Terdeteksi {current_count} perangkat aktif.")
+        if current_count > 3: # Asumsi: HP, Laptop, ESP32 (Lebih dari itu = ASING)
+            print("!!! [WARNING] INTRUSI TERDETEKSI: PERANGKAT ASING DI JARINGAN !!!")
         else:
-            print("\n[FALLBACK] Mode Berdaulat Mandiri Aktif (Hardware Offline).")
+            print("[SAFE] Jaringan Berdaulat Bersih.")
+
+    def auto_discover(self):
+        """Auto-Discovery Node H2K"""
+        print(f"\n[SCANNING] Mencari Node Lenovo/ESP32...")
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        try:
+            s.connect(("8.8.8.8", 80))
+            local_ip = s.getsockname()[0]
+            s.close()
+            prefix = ".".join(local_ip.split(".")[:-1]) + "."
+            
+            # Jalankan Intrusion Check sebelum Scanning
+            self.intrusion_check(prefix)
+            
+            # Scanning cepat 10 IP terakhir (biasanya DHCP mulai dari belakang atau depan)
+            for i in [1, 2, 10, 15, 100, 101, 105]: 
+                target = f"{prefix}{i}"
+                try:
+                    r = requests.get(f"http://{target}/pulse", timeout=0.2)
+                    if r.status_code == 200:
+                        print(f"[SUCCESS] Node Ditemukan: {target}")
+                        return target
+                except: continue
+            return None
+        except:
+            return None
+
+    def execute(self):
+        print(f"--- [STG MASTER CONTROL: {self.commander}] ---")
+        print(f"[MISSION] Tracking {self.vessel} - Mars Flyby 2026")
+        
+        node = self.auto_discover()
+        if node:
+            print(f"[ACTION] Sinkronisasi Pulse ke {node}...")
+            requests.get(f"http://{node}/pulse", timeout=1)
+        else:
+            print("[FALLBACK] Hardware Offline. Menjalankan Mode Mandiri.")
 
 if __name__ == "__main__":
-    stg = STG_Sovereign_Auto()
-    stg.run()
+    stg = STG_Sovereign_Final()
+    stg.execute()
