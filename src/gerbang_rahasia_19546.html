@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8"><title>STG | GLOBAL DIPLOMACY v2.0</title>
+    <style>
+        :root { --neon: #00f2ff; --gold: #ffd700; --bg: #020617; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: var(--bg); font-family: 'Share Tech Mono', monospace; }
+        
+        /* VIDEO BACKGROUND SIMULATION (PARTICLES) */
+        #bg-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.3; }
+
+        .content-overlay { position: relative; z-index: 1; text-align: center; padding-top: 10vh; }
+        .flag-row { display: flex; justify-content: center; gap: 30px; margin-bottom: 40px; font-size: 2.5rem; animation: float 6s ease-in-out infinite; }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+
+        .gate-box { border: 2px solid var(--neon); background: rgba(0,242,255,0.05); padding: 50px; display: inline-block; box-shadow: 0 0 50px rgba(0,242,255,0.2); border-radius: 15px; }
+        h1 { color: var(--neon); letter-spacing: 8px; text-transform: uppercase; margin: 0; }
+        .motto { color: var(--gold); font-size: 1.2rem; margin: 20px 0; max-width: 600px; }
+        
+        .btn-enter { background: var(--gold); color: black; border: none; padding: 15px 50px; cursor: pointer; font-weight: bold; font-size: 1.1rem; transition: 0.3s; }
+        .btn-enter:hover { letter-spacing: 3px; box-shadow: 0 0 30px var(--gold); }
+    </style>
+</head>
+<body>
+    <canvas id="bg-canvas"></canvas>
+
+    <div class="content-overlay">
+        <div class="flag-row">
+            <span>🇮🇩</span> <span>🇨🇭</span> <span>🇺🇸</span> <span>🇪🇺</span> <span>🇨🇳</span>
+        </div>
+
+        <div class="gate-box">
+            <h1>STG GOVERNMENT</h1>
+            <p style="color:#888;">ZURICH-JAKARTA QUANTUM BRIDGE</p>
+            <div class="motto">
+                "We lead the new era of algorithms. <br>
+                Bridging Classical, AI, and Quantum Systems."
+            </div>
+            <button class="btn-enter" onclick="window.location.href='index.html'">ENTER COMMAND CENTER</button>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const particles = [];
+        for(let i=0; i<100; i++) {
+            particles.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, s: Math.random()*2, d: Math.random()*0.5});
+        }
+        function draw() {
+            ctx.clearRect(0,0,canvas.width, canvas.height);
+            ctx.fillStyle = '#00f2ff';
+            particles.forEach(p => {
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.s, 0, Math.PI*2); ctx.fill();
+                p.y -= p.d; if(p.y < 0) p.y = canvas.height;
+            });
+            requestAnimationFrame(draw);
+        }
+        draw();
+    </script>
+</body>
+</html>
