@@ -1,0 +1,12 @@
+{
+    "mission": "Artemis II Context - Psyche Metal World",
+    "target": "16 Psyche Asteroid",
+    "composition": {
+        "Iron": "85%",
+        "Nickel": "10%",
+        "Gold/Silicate": "5%"
+    },
+    "estimated_value": "10,000,000,000,000,000,000 USD",
+    "coordinates": "2.92 AU from Sun",
+    "status": "DATA_LOCKED_STG_114"
+}

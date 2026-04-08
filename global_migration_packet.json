@@ -1,0 +1,8 @@
+{
+    "origin_coordinates": "114 BT",
+    "sovereign_vault": "0xaa903Ea35F3E93c56d362236e2D136d52CD1a0E0",
+    "collateral_hash": "729fc52e79864f02effca2713a3b3968e50b8aa3958e2fd2f80f6f9b12f9fed2",
+    "export_valuation": "10 Quadrillion USD",
+    "timestamp_lock": 1775577263,
+    "protocol": "WEB5-STG-MIGRATION"
+}
