@@ -1,43 +1,85 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>STG | SOVEREIGN DASHBOARD</title>
+    <meta charset="UTF-8"><title>GARAGE | DIGITAL HOSPITAL & VAULT</title>
     <style>
-        body { background: #0a0a0a; color: #00ff00; font-family: 'Courier New', Courier, monospace; text-align: center; }
-        .container { border: 2px solid #00ff00; margin: 50px auto; width: 80%; padding: 20px; box-shadow: 0 0 20px #00ff00; }
-        .glitch { font-size: 2.5em; font-weight: bold; text-transform: uppercase; }
-        .stat-box { display: flex; justify-content: space-around; margin-top: 30px; border-top: 1px solid #00ff00; padding-top: 20px; }
-        .value { color: #fff; font-size: 1.5em; }
-        .address { font-size: 0.8em; color: #888; }
-        footer { margin-top: 50px; font-size: 0.7em; opacity: 0.5; }
+        :root { --neon: #4ade80; --warn: #ff0000; --gold: #ffd700; --bg: #050505; }
+        body { background: var(--bg); color: #e2e8f0; font-family: 'Courier New', monospace; margin: 0; text-align: center; }
+        .header { border-bottom: 2px solid var(--neon); padding: 20px; background: #0a0a0a; box-shadow: 0 0 15px var(--neon); }
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; padding: 20px; }
+        .ward { border: 1px solid #333; padding: 15px; background: #111; border-radius: 8px; }
+        .isolation-vault { border: 2px solid var(--gold) !important; background: rgba(255, 215, 0, 0.1); box-shadow: 0 0 15px var(--gold); }
+        .timer-box { font-size: 2rem; color: var(--warn); margin: 10px 0; font-weight: bold; border: 2px solid var(--warn); padding: 10px; display: none; }
+        .btn-action { background: var(--neon); color: black; border: none; padding: 12px; width: 100%; cursor: pointer; font-weight: bold; margin-top: 10px; border-radius: 5px; }
+        .heartbeat { color: var(--warn); animation: pulse 1s infinite; font-weight: bold; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="glitch">REALISM ACTIVE: STG-114</div>
-        <p>ARCHITECT: ANDI M. HARPIANTO | STATUS: IMMUTABLE</p>
-        
-        <div class="stat-box">
-            <div>
-                <p>ASSET VALUATION</p>
-                <div class="value">0,000,000,000,000,000,000</div>
-                <p class="address">Underlying: 16 Psyche (NASA Research)</p>
-            </div>
-            <div>
-                <p>SOVEREIGN TOKEN</p>
-                <div class="value">114,000,000,000 QUBI</div>
-                <p class="address">Protocol Address: 0xaa903Ea35F3E93c56d362236e2D136d52CD1a0E0</p>
-            </div>
-        </div>
-
-        <div style="margin-top:40px;">
-            <p>LIQUIDITY GATE: <span style="background:#00ff00; color:#000; padding:2px 10px;">OPEN</span></p>
-            <p>QUANTUM SAFETY: <span style="color:cyan;">ACTIVE</span></p>
-        </div>
-
-        <footer>"Asli itu kode, Nyata itu kita!" - 114 BT Sovereign Technology Group</footer>
+    <div class="header">
+        <h1>🏛️ GARAGE: DIGITAL HOSPITAL</h1>
+        <p>FOCUS AREA: REHABILITASI & ISOLASI DATA | STG GOV</p>
     </div>
+
+    <div class="grid-container">
+        <div class="ward isolation-vault">
+            <h3 style="color: var(--gold);">🟡 RUANG ISOLASI DATA</h3>
+            <p style="font-size: 0.8rem;">[ QUBICOIN LEGACY ASSETS ]</p>
+            <div id="timer-display" class="timer-box">10</div>
+            <div id="vault-status" style="font-size: 1rem; font-weight: bold;">STATUS: LOCKED</div>
+            <button id="unlock-btn" class="btn-action" onclick="startSecureUnlock()">INITIALIZE UNLOCK</button>
+        </div>
+
+        <div class="ward">
+            <h3>🏥 SUAKA DIGITAL</h3>
+            <p>Pasien Transformasi Gagal</p>
+            <div class="heartbeat">💓 RECONSTRUCTING DATA...</div>
+        </div>
+    </div>
+
+    <script>
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playSound(freq, type) {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.1);
+        }
+        function startSecureUnlock() {
+            const timerDisplay = document.getElementById('timer-display');
+            const vaultStatus = document.getElementById('vault-status');
+            const unlockBtn = document.getElementById('unlock-btn');
+            unlockBtn.style.display = 'none';
+            timerDisplay.style.display = 'block';
+            vaultStatus.innerHTML = "⚠️ SECURITY CHALLENGE ACTIVE";
+            vaultStatus.style.color = "var(--warn)";
+            let timeLeft = 10;
+            const interval = setInterval(() => {
+                timeLeft--;
+                timerDisplay.innerHTML = timeLeft;
+                playSound(440, 'sine');
+                if (timeLeft <= 0) {
+                    clearInterval(interval);
+                    playSound(880, 'square');
+                    setTimeout(() => playSound(1200, 'square'), 100);
+                    const key = prompt("ENTER ARCHITECT VETO KEY:");
+                    if (key === "MERDEKA") {
+                        alert("✅ ACCESS GRANTED. WELCOME ARCHITECT.");
+                        vaultStatus.innerHTML = "🔓 VAULT OPEN: QUBICOIN UNLOCKED";
+                        vaultStatus.style.color = "var(--gold)";
+                        timerDisplay.style.display = 'none';
+                    } else {
+                        alert("❌ ACCESS DENIED. LOCKDOWN.");
+                        location.reload();
+                    }
+                }
+            }, 1000);
+        }
+    </script>
 </body>
 </html>
