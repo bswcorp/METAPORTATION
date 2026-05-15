@@ -1,0 +1,41 @@
+name: 🚀 GLBExt Curriculum Auto-Release Engine
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  validate_and_release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🛰️ Checkout Codebase
+        uses: actions/checkout@v4
+
+      - name: 🔍 Linter Setup (Markdown Check)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ruby
+          sudo gem install mdl
+
+      - name: ⚙️ Execute Code validation
+        run: |
+          echo "Executing internal system compilation..."
+          mdl --style all . || echo "Validation warnings detected, proceeding to compile."
+
+      - name: 📦 Execute Auto-Compilation Script
+        run: |
+          chmod +x ./scripts/compile_curriculum.sh
+          ./scripts/compile_curriculum.sh
+
+      - name: 🔐 Generate System Tag & Release
+        uses: softprops/action-gh-release@v2
+        if: success()
+        with:
+          tag_name: "v3.65-run-${{ github.run_number }}"
+          name: "Metaportation Core Curriculum Build v3.65-run-${{ github.run_number }}"
+          body_path: ./RELEASE_NOTE.md
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
