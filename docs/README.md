@@ -2,6 +2,26 @@
 ## 🌌 Overview
 METAPORTATION adalah sebuah proyek interdisipliner yang menggabungkan seni melipat tingkat lanjut (Advanced Origami Topology) dengan teori manipulasi ruang spekulatif. Proyek ini berfungsi sebagai cetak biru (blueprint) kurikulum masa depan untuk menjembatani logika geometri abstrak, struktur dimensi, dan visualisasi fisik.
 
+# 📖 DAFTAR ISI MALOGAZINE: METAPORTATION (Edisi Perdana)
+
+Suplemen edukasi dan vitamin literasi digital untuk pendampingan Kurikulum GLBExt Generation.
+
+## 🌌 BAGIAN I: THEORETICAL DISCOVERY (Fisika Kuantum ke Metafisis)
+*   **Editorial 🍼 :** *Cukilan Kecil di Tengah Samudra Ilmu Orang Pintar* – Catatan Pengantar Redaksi.
+*   **Artikel Utama:** *Batasan Lab Global* – Mengapa Teleportasi IBM & MIT Baru Sebatas Foton dan Elektron Bebas.
+*   **Deklarasi Konsep:** *Mendefinisikan Metaportasi* – Melompati Batas Benda Mati Menuju Pemindahan Struktur Organik Bernyawa.
+*   **Kolom Ilmu Gelap:** *Membongkar Teori Non-Locality* – Keterhubungan Dua Entitas Tanpa Batas Ruang Fisik.
+
+## 🛠️ BAGIAN II: SPATIAL TOPOLOGY (Praktik Seni Melipat Dimensi)
+*   **Eksperimen Mandiri:** *Geometri Non-Euclidean untuk Pemula* – Cara Melihat Ruang yang Melengkung.
+*   **Panduan Origami:** *Cetak Biru Lipatan Metaportasi* – Langkah Fisik Menghubungkan Titik A ke Titik B Menggunakan Kertas Modul.
+*   **Geek Corner:** *Scripting the Fold* – Kode Pemrograman Sederhana untuk Memvisualisasikan Fraktal Ruang di Komputer.
+
+## 📝 BAGIAN III: SCIENTIFIC INTEGRITY & FUTURE ROADMAP
+*   **Etika Riset:** *Menulis Tanpa Plagiarisme* – Pentingnya Aturan Sitasi dan Kejujuran Sumber di Era Open-Source.
+*   **Catatan Akhir:** *Evaluasi 365 Hari Riset* – Menjaga Konsistensi dari Ide Abstrak Menuju Implementasi Publik.
+*   
+
 Proyek ini dibangun di atas pondasi riset mandiri terstruktur (Fase 365 Hari) untuk mendefinisikan kembali bagaimana generasi masa depan (*GLBExt Generation*) memahami interaksi ruang, bentuk, dan dimensi tersembunyi.
 
 ## 📚 Core Philosophy
