@@ -29,6 +29,3 @@ METAPORTATION/
 
 ---
 
-Silakan copy seluruh isi di atas dan paste ke file `README.md` di repository-mu.
-
-Kalau nanti kamu mau versi yang lebih detail (misalnya menambahkan penjelasan isi setiap modul setelah kamu kasih info lebih lanjut), tinggal bilang saja.
