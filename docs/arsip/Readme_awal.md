@@ -1,5 +1,9 @@
+# “What this project is NOT”
 
-# METAPORTATION: The Art of Spatial Folding and Curriculum for GLBExt Generation
+# INI ADALAHNSRSIP LAMA DARI BASE IDEA AWAL PENULISAN PROJECT
+
+
+## METAPORTATION: The Art of Spatial Folding and Curriculum for GLBExt Generation
 ## 🌌 Overview
 METAPORTATION adalah sebuah proyek interdisipliner yang menggabungkan seni melipat tingkat lanjut (Advanced Origami Topology) dengan teori manipulasi ruang spekulatif. Proyek ini berfungsi sebagai cetak biru (blueprint) kurikulum masa depan untuk menjembatani logika geometri abstrak, struktur dimensi, dan visualisasi fisik.
 
